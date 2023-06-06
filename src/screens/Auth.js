@@ -6,7 +6,8 @@ import {
     View, 
     TextInput, 
     TouchableOpacity,
-    Text
+    Text,
+    ScrollView,
 } from 'react-native'
 
 import axios from 'axios'
@@ -66,45 +67,47 @@ export default class Auth extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ImageBackground style={styles.background} source={logo} />
-                <View style={styles.formsContainer}>
-                    {this.state.stageNew &&
-                        <TextInput placeholder='Nome' value={this.state.name} 
-                        style={styles.input}
-                        onChangeText={name => this.setState({name})} />
-                    }
-                    <TextInput placeholder='E-mail' value={this.state.email} 
-                        style={styles.input} onChangeText={email => this.setState({email})} />
-                    {this.state.stageNew &&
-                        <TextInput placeholder='Telefone' value={this.state.phone} 
-                        style={styles.input}
-                        onChangeText={phone => this.setState({phone})} />
-                    }
-                    <TextInput placeholder='Senha' value={this.state.password} 
-                        style={styles.input} secureTextEntry={true} 
-                        onChangeText={password => this.setState({password})} />
-                    {this.state.stageNew &&
-                        <TextInput placeholder='Confirme sua Senha' value={this.state.confirmPassword} 
-                        style={styles.input} secureTextEntry={true} 
-                        onChangeText={confirmPassword => this.setState({confirmPassword})} />
-                    }
-                    <TouchableOpacity onPress={this.signinOrSignUp}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>
-                                {this.state.stageNew ? 'Registrar' : 'Entrar'}
-                                </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10, alignItems: 'center'}}
-                        onPress={
-                            () => this.setState({ stageNew: !this.state.stageNew })
+                <ScrollView style={styles.scroll}>
+                    <ImageBackground style={styles.background} source={logo} />
+                    <View style={styles.formsContainer}>
+                        {this.state.stageNew &&
+                            <TextInput placeholder='Nome' value={this.state.name} 
+                            style={styles.input}
+                            onChangeText={name => this.setState({name})} />
                         }
-                    >
-                        <Text>
-                            {this.state.stageNew ? 'Já possui conta?' : 'Não tem conta? Cadastre-se'}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                        <TextInput placeholder='E-mail' value={this.state.email} 
+                            style={styles.input} onChangeText={email => this.setState({email})} />
+                        {this.state.stageNew &&
+                            <TextInput placeholder='Telefone' value={this.state.phone} 
+                            style={styles.input}
+                            onChangeText={phone => this.setState({phone})} />
+                        }
+                        <TextInput placeholder='Senha' value={this.state.password} 
+                            style={styles.input} secureTextEntry={true} 
+                            onChangeText={password => this.setState({password})} />
+                        {this.state.stageNew &&
+                            <TextInput placeholder='Confirme sua Senha' value={this.state.confirmPassword} 
+                            style={styles.input} secureTextEntry={true} 
+                            onChangeText={confirmPassword => this.setState({confirmPassword})} />
+                        }
+                        <TouchableOpacity onPress={this.signinOrSignUp}>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>
+                                    {this.state.stageNew ? 'Registrar' : 'Entrar'}
+                                    </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{padding: 10, alignItems: 'center'}}
+                            onPress={
+                                () => this.setState({ stageNew: !this.state.stageNew })
+                            }
+                        >
+                            <Text>
+                                {this.state.stageNew ? 'Já possui conta?' : 'Não tem conta? Cadastre-se'}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
         )
     }
@@ -116,6 +119,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    scroll: {
+        width: '100%',
+    },
     background: {
         flex: 5,
         width: '100%',
@@ -124,6 +130,7 @@ const styles = StyleSheet.create({
     formsContainer: {
         flex: 5,
         width: '90%',
+        marginLeft: 16,
     },
     input: {
         borderColor: '#6BCDC3',
@@ -132,7 +139,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 10,
         width: '100%'
-    }, 
+    },
     button: {
         backgroundColor: '#6BCDC3',
         marginTop: 10,
