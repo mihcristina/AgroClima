@@ -6,20 +6,49 @@ import {
     View, 
     TextInput, 
     TouchableOpacity,
-    Text
+    Text,
+    Alert
 } from 'react-native'
+
+import axios from 'axios'
 
 import logo from '../../assets/imgs/AGROCLIMA.png'
 import commonStyles from '../commonStyles'
+import { showError, showSuccess, server } from '../common'
 
 export default class Auth extends Component {
 
     state = {
-        name: '',
+        nome: '',
         email: '',
-        password: '',
-        confirmPassword: '',
+        telefone: '',
+        senha: '',
+        confirmacaoSenha: '',
         stageNew: true, 
+    }
+
+    signinOrSignUp = () => {
+        if(this.state.stageNew) {
+            this.signup()
+        } else {
+            Alert.alert('Sucesso, Logar')
+        }
+    }
+
+    signup = async () => {
+        try {
+            await axios.post(`${server}`, {
+                nome: this.state.name,
+                email: this.state.email,
+                telefone: this.state.phone,
+                senha: this.state.password,
+                confirmacaoSenha: this.state.confirmPassword
+            })
+            showSuccess('Usuário cadastrado!')
+            this.setState({ ...initialState })
+        } catch(e) {
+            showError(e)
+        }
     }
 
     render() {
@@ -34,6 +63,11 @@ export default class Auth extends Component {
                     }
                     <TextInput placeholder='E-mail' value={this.state.email} 
                         style={styles.input} onChangeText={email => this.setState({email})} />
+                    {this.state.stageNew &&
+                        <TextInput placeholder='Telefone' value={this.state.phone} 
+                        style={styles.input}
+                        onChangeText={phone => this.setState({phone})} />
+                    }
                     <TextInput placeholder='Senha' value={this.state.password} 
                         style={styles.input} secureTextEntry={true} 
                         onChangeText={password => this.setState({password})} />
@@ -42,7 +76,7 @@ export default class Auth extends Component {
                         style={styles.input} secureTextEntry={true} 
                         onChangeText={confirmPassword => this.setState({confirmPassword})} />
                     }
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.signinOrSignUp}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>
                                 {this.state.stageNew ? 'Registrar' : 'Entrar'}
