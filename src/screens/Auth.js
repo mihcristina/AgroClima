@@ -31,13 +31,13 @@ export default class Auth extends Component {
         if(this.state.stageNew) {
             this.signup()
         } else {
-            Alert.alert('Sucesso, Logar')
+            this.signin()
         }
     }
 
     signup = async () => {
         try {
-            await axios.post(`${server}`, {
+            await axios.post(`${server}/usuario`, {
                 nome: this.state.name,
                 email: this.state.email,
                 telefone: this.state.phone,
@@ -45,7 +45,20 @@ export default class Auth extends Component {
                 confirmacaoSenha: this.state.confirmPassword
             })
             showSuccess('Usuário cadastrado!')
-            this.setState({ ...initialState })
+            this.setState({stageNew: false})
+        } catch(e) {
+            showError(e)
+        }
+    }
+
+    signin = async () => {
+        try {
+            const res = await axios.post(`${server}/auth/login`, {
+                email: this.state.email,
+                senha: this.state.password
+            })
+            axios.defaults.headers.common['Authorization'] = res.data.token
+            this.props.navigation.navigate('Home')
         } catch(e) {
             showError(e)
         }

@@ -1,6 +1,6 @@
 import { Alert, Platform } from 'react-native'
 
-const server = 'https://agroclima-api.onrender.com/usuario'
+const server = 'https://agroclima-api.onrender.com'
 
 function showError(err) {
     Alert.alert('Ops, ocorreu um Problema!', `Mensagem: ${err}`)
