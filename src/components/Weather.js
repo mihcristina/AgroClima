@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 
 import commonStyles from '../commonStyles'
-import sunny from '../../assets/imgs/sunny.png'
 
 export default props => {
     return (
@@ -11,9 +10,7 @@ export default props => {
             <View>
                 <Text style={styles.desc}>{props.desc}</Text>
             </View>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={sunny}></Image>
-            </View>
+            
         </View>
     </>
     )
@@ -27,19 +24,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         
     },
-    imageContainer: {
-        width: '20%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    image: {
-        width: 50,
-        height: 50,
-    },
     desc: {
         fontFamily: commonStyles.fontFamily,
         color: commonStyles.colors.mainText,
-        fontSize: 30,
+        fontSize: 15,
     },
     
 })

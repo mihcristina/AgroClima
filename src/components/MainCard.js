@@ -1,12 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
-import sunny from '../../assets/imgs/sunny.png'
+import { StyleSheet, Text, View } from 'react-native'
 
 export const MainCard  = (props) => {
     return (
         <View style={styles.card} backgroundColor={props.backgroundColor}>
             <Text style={styles.cardTitle}>{props.title}</Text>
-            <Image style={styles.image} source={sunny}></Image>
             <Text style={styles.cardTitle}>{props.weather}</Text>
         </View>
     )

@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-import { View, Text, ImageBackground, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 
 import commonStyles from '../commonStyles'
 import todayImage from '../../assets/imgs/hoje.png'
@@ -8,14 +8,38 @@ import 'moment/locale/pt-br'
 import Weather from '../components/Weather'
 import { MainCard } from '../components/MainCard'
 import { InfoCard } from '../components/InfoCard'
+import getCurrentWeather from '../services/api'
+
+export default function WeatherScreen({ navigation }) {
+
+    function nextPage() {
+        navigation.navigate('AgroScreen')
+    }
+
+    const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
+    const [cloudness, setCloudness] = useState(0)
+    const [condition, setCondition] = useState('')
+    const [humidity, setHumidity] = useState(0)
+    const [icon, setIcon] = useState('')
+    const [season, setSeason] = useState('')
 
 
-export default class WeatherScreen extends Component {
+    async function setCurrentWeather() {
+        const data = await getCurrentWeather()
+        setCloudness(data[0])
+        setCondition(data[1])
+        setHumidity(data[2])
+        setIcon(data[3])
+        setSeason(data[4])
+    }
 
-    render() {
-        const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
-        return (
+    useEffect(() => { 
+        setCurrentWeather()
+    }, [])
+
+    return (
             <View style={styles.container}>
+
                 <ImageBackground source={todayImage}
                 style={styles.background}>
                     <View style={styles.titleBar}>
@@ -23,27 +47,39 @@ export default class WeatherScreen extends Component {
                         <Text style={styles.subtitle}>{today}</Text>
                     </View>
                 </ImageBackground>
-                <View style={styles.weatherList}>
-                    <Weather desc='Ensolarado'/>
-                    <View style={styles.cardView}>
-                        <MainCard title={'Manhã'} backgroundColor={'#cc6e30'} weather='21º'></MainCard>
-                        <MainCard title={'Tarde'} backgroundColor={'#FCC63F'} weather='21º'></MainCard>
-                        <MainCard title={'Noite'} backgroundColor={'#38B7B8'} weather='21º'></MainCard>
-                    </View>
-                    <View style={styles.info}>
-                        <Text style={styles.infoText}>Informações para seu cultivo</Text>
-                        <View style={styles.infoCards}>
-                            <InfoCard title={'Vento'} value={'65 km/h'}></InfoCard>
-                            <InfoCard title={'Umidade'} value={'80%'}></InfoCard>
-                            <InfoCard title={'Temp. Min.'} value={'20º C'}></InfoCard>
-                            <InfoCard title={'Temp. Máx.'} value={'29º C'}></InfoCard>
+
+                <ScrollView style={styles.scroll}>
+                    <View style={styles.weatherList}>
+
+                        <Weather desc='Sol o dia todo sem nuvens no céu. Noite de tempo aberto ainda sem nuvens.'/>
+
+                        <View style={styles.cardView}>
+                            <MainCard title={'Manhã'} icon={'cloud-moon'} backgroundColor={'#cc6e30'} weather='14°C'></MainCard>
+                            <MainCard title={'Tarde'} backgroundColor={'#FCC63F'} weather='24º'></MainCard>
+                            <MainCard title={'Noite'} backgroundColor={'#38B7B8'} weather='23º'></MainCard>
+                        </View>
+
+                        <View style={styles.info}>
+                            <Text style={styles.infoText}>Informações para seu cultivo</Text>
+                            <View style={styles.infoCards}>
+                                <InfoCard title={'Nublado'} value={0}></InfoCard>
+                                <InfoCard title={'Umidade'} value={60}></InfoCard>
+                                <InfoCard title={'Condição'} value={'clear'}></InfoCard>
+                            </View>
                         </View>
                     </View>
-                </View>
+                    <View style={styles.viewButton}>
+                        <TouchableOpacity style={styles.button} onPress={nextPage}>
+                            <Text style={styles.buttonText}>
+                                E agora?
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
         )
     }
-}
+
 
 const styles = StyleSheet.create({
     container: {
@@ -96,5 +132,24 @@ const styles = StyleSheet.create({
     infoCards: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+    },
+    scroll: {
+        width: '100%',
+    },
+    button: {
+        backgroundColor: '#6BCDC3',
+        marginTop: 10,
+        padding: 10,
+        width: '90%',
+        alignItems: 'center',
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontFamily: commonStyles.fontFamily,
+        fontSize: 20
+    },
+    viewButton: {
+        alignItems: 'center'
     }
 })

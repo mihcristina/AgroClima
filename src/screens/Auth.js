@@ -146,11 +146,9 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         borderRadius: 10
-        
     },
     buttonText: {
         fontFamily: commonStyles.fontFamily,
         fontSize: 20
     }
-    
 })
